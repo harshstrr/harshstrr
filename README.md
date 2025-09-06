@@ -8,7 +8,7 @@
 
 ---
 <p align="center">
-  Hi! I'm **Harsh Suthar**, a Computer Science student and passionate developer.  
+  Hi! I'm <b>Harsh Suthar</b> , a Computer Science student and passionate developer.  
  
   I believe in learning by building.  
   > *"Build, Fail, Learn, Repeat — Until It Works!"*
