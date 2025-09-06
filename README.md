@@ -7,19 +7,19 @@
 </p>
 
 ---
-
-## 🧑‍💻 About Me
-
-Hi! I'm **Harsh Suthar**, a Computer Science student and passionate developer.  
+<p align="center">
+  Hi! I'm **Harsh Suthar**, a Computer Science student and passionate developer.  
  
-I believe in learning by building.  
-> *"Build, Fail, Learn, Repeat — Until It Works!"*
+  I believe in learning by building.  
+  > *"Build, Fail, Learn, Repeat — Until It Works!"*
+</p>
+
+
 
 ---
 
-## 📫 How to Reach Me
-
-<p align="left">
+<p align="center">
+  <strong> 📫 How to Reach Me</strong><br/><br/>
   <a href="mailto:hsuthar1125@gmail.com"><img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white"/></a>
   <a href="https://github.com/itz-Harsh"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white"/></a>
   <a href="https://instagram.com/_harsh_str"><img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white"/></a>
@@ -27,9 +27,9 @@ I believe in learning by building.
 
 ---
 
-## 💻 Languages I Use
 
-<p>
+<p align="center">
+  <strong>💻 Languages I Use</strong><br/><br/>
   <img src="https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=html5&logoColor=white"/>
   <img src="https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=css3&logoColor=white"/>
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"/>
@@ -52,10 +52,8 @@ I believe in learning by building.
 
 ---
 
-## 🧰 Frameworks & Tools I Use
-
-<p>
-
+<p align="center">
+<strong> 🧰 Frameworks & Tools I Use</strong><br/><br/>
   <img src="https://img.shields.io/badge/PyAutoGUI-FFD43B?style=for-the-badge&logo=python&logoColor=black"/>
   <img src="https://img.shields.io/badge/Tkinter-FF6F00?style=for-the-badge&logo=python&logoColor=white"/>
   <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white"/>
@@ -63,9 +61,9 @@ I believe in learning by building.
 
 ---
 
-## 🧠 Currently Learning
 
-<p>
+<p align="center">
+  <strong>🧠 Currently Learning</strong><br/><br/>
   <img src="https://img.shields.io/badge/Machine%20Learning-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=black"/>
   <img src="https://img.shields.io/badge/Data%20Science-4B8BBE?style=for-the-badge&logo=python&logoColor=white"/>
   <img src="https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white"/>
@@ -73,15 +71,18 @@ I believe in learning by building.
 
 ---
 
-## 🔥 Featured Projects
 
+<div align="center">
+  <strong>🔥 Featured Projects</strong><br/><br/>
 | Project | Description | Tech |
-|--------|-------------|------|
+|---------|-------------|------|
 | [`Musify`](https://github.com/itz-Harsh/Musify) | Music Streaming App using JioSaavn API and ReactJS. | React, JS |
 | [`Jarvis`](https://github.com/itz-Harsh/JARVIS-2.0) | A local Python voice assistant inspired by Iron Man. Conversational AI, system controls, and automation — hands-free productivity on your desktop. | Python |
 | [`Cleaner`](https://github.com/itz-Harsh/Cleaner) | Windows cleanup tool using automation (temp, prefetch, recycle bin). | Python, PyAutoGUI |
 | [`Weather Chatbot & API`]((https://github.com/itz-Harsh/Weather_ChatBot__FlaskAPI)) |  A simple Weather Chatbot built with Flask, OpenWeatherMap API, and a modern animated UI | Python , Flask , Basic Web |
 | [`TaskFlow`](https://github.com/itz-Harsh/Join-TaskFlow) |A To-Do List App with full-stack Authentication System built with Node.js (Express + MongoDB) for the backend and React.js for the frontend.  | React , Express , MongoDB |
+
+</div>
 
 
 ---
