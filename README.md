@@ -72,7 +72,7 @@
 ---
 
 
-<div align="center">
+
   <strong>🔥 Featured Projects</strong><br/><br/>
 | Project | Description | Tech |
 |---------|-------------|------|
@@ -82,7 +82,7 @@
 | [`Weather Chatbot & API`]((https://github.com/itz-Harsh/Weather_ChatBot__FlaskAPI)) |  A simple Weather Chatbot built with Flask, OpenWeatherMap API, and a modern animated UI | Python , Flask , Basic Web |
 | [`TaskFlow`](https://github.com/itz-Harsh/Join-TaskFlow) |A To-Do List App with full-stack Authentication System built with Node.js (Express + MongoDB) for the backend and React.js for the frontend.  | React , Express , MongoDB |
 
-</div>
+
 
 
 ---
