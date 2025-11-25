@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consistency Track</title>
+</head>
+<body style="background-color: #0F1724; color: #E6F6F0;">
+    <main style="font-family:Segoe UI, Roboto, Arial, sans-serif;max-width:720px;margin:28px auto;padding:16px;">
+        <h1>Consistency Track</h1>
+
+        <form id="settings" style="margin-bottom:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            <label for="daysCount">Days:</label>
+            <input id="daysCount" type="number" min="1" max="365" value="7" style="width:80px;padding:6px;" />
+            <button id="createBtn" type="submit" style="padding:6px 10px;">Create Track</button>
+            <button id="resetBtn" type="button" style="padding:6px 10px;">Reset</button>
+            <div id="status" aria-live="polite" style="margin-left:8px;color:#333"></div>
+        </form>
+
+        <div id="progressWrap" style="margin-bottom:12px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+            <div id="progressText">Completed: 0 / 0</div>
+            <progress id="progressBar" value="0" max="0" style="width:220px;height:14px;"></progress>
+        </div>
+
+        <div id="tracker" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+
+        <div id="congrats" role="status" style="margin-top:14px;font-weight:600;color:green;display:none"></div>
+    </main>
+
+    <style>
+        :root{--bg:#0F1724;--mint:#58C4A3;--mint-2:#9FEBD9;--light:#F6F9FC}
+        body{background:var(--bg);color:var(--light);margin:0}
+        main{background:transparent}
+        h1{color:var(--mint);margin-top:0;font-weight:700}
+        #settings label{color:var(--light)}
+        #settings input{border:1px solid rgba(255,255,255,0.08);background:transparent;color:inherit;padding:6px;border-radius:6px}
+
+        /* primary / create button */
+        #settings button{background:var(--mint);color:#042027;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600}
+        #settings button[type="button"]{background:transparent;border:1px solid rgba(255,255,255,0.08);color:var(--light)}
+        #settings button:focus,#settings input:focus{outline:3px solid rgba(88,196,163,0.14)}
+        #status{color:var(--mint-2)}
+
+        .day-btn{font-weight:700;font-size:13px;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.03);color:var(--light);cursor:pointer;min-width:64px;transition:transform .12s ease,box-shadow .12s ease}
+        .day-btn:hover:not(:disabled){transform:translateY(-4px);box-shadow:0 8px 20px rgba(0,0,0,0.35)}
+        .day-btn:focus{outline:3px solid rgba(88,196,163,0.12)}
+        .day-btn.completed{background:linear-gradient(90deg,var(--mint),var(--mint-2));color:#00014e;border-color:rgba(0,0,0,0.22)}
+        .day-btn:disabled{opacity:0.7;cursor:default}
+
+        /* progress bar tinting */
+        progress{appearance:none;height:12px;border-radius:8px;overflow:hidden;background:rgba(255,255,255,0.04)}
+        progress::-webkit-progress-bar{background:transparent}
+        progress::-webkit-progress-value{background:linear-gradient(90deg,var(--mint),var(--mint-2))}
+        progress::-moz-progress-bar{background:linear-gradient(90deg,var(--mint),var(--mint-2))}
+
+        #congrats{color:var(--mint);font-weight:700}
+    </style>
+
+    <script>
+        (function(){
+            const LS_KEY_COUNT = 'consistency_days_count';
+            const LS_KEY_STATE = 'consistency_days_state';
+
+            const daysInput = document.getElementById('daysCount');
+            const createBtn = document.getElementById('createBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const tracker = document.getElementById('tracker');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const status = document.getElementById('status');
+            const congrats = document.getElementById('congrats');
+
+            let daysCount = 0;
+            let state = []; // boolean array
+
+            function save() {
+                localStorage.setItem(LS_KEY_COUNT, String(daysCount));
+                localStorage.setItem(LS_KEY_STATE, JSON.stringify(state));
+            }
+
+            function load() {
+                const c = localStorage.getItem(LS_KEY_COUNT);
+                const s = localStorage.getItem(LS_KEY_STATE);
+                if(c !== null) daysCount = Math.max(1, parseInt(c,10) || 1);
+                if(s !== null) {
+                    try{ state = JSON.parse(s); } catch(e){ state = [] }
+                }
+                // ensure state length matches
+                if(!Array.isArray(state) || state.length !== daysCount) {
+                    state = Array.from({length: daysCount}, () => false);
+                }
+
+                // Normalize stored state so completions form a contiguous prefix.
+                // If an earlier day is not completed, any later stored completions are cleared.
+                const firstFalse = state.findIndex(v => !v);
+                if(firstFalse !== -1) {
+                    for(let i = firstFalse + 1; i < state.length; i++) state[i] = false;
+                    save();
+                }
+            }
+
+            function render() {
+                tracker.innerHTML = '';
+                progressBar.max = daysCount;
+                const completed = state.filter(Boolean).length;
+                progressBar.value = completed;
+                progressText.textContent = `Completed: ${completed} / ${daysCount}`;
+                congrats.style.display = 'none';
+
+                for(let i=0;i<daysCount;i++){
+                    const btn = document.createElement('button');
+                    btn.className = 'day-btn';
+                    btn.textContent = 'Day ' + i;
+                    btn.dataset.index = i;
+                    btn.type = 'button';
+
+                    // Disabled when already completed, or when the previous day isn't completed (no skipping)
+                    const prevCompleted = (i === 0) ? true : Boolean(state[i-1]);
+                    if(state[i]){
+                        btn.classList.add('completed');
+                        btn.disabled = true;
+                    } else if(!prevCompleted) {
+                        btn.disabled = true;
+                    }
+
+                    btn.addEventListener('click', ()=> {
+                        markComplete(i, btn);
+                    });
+                    tracker.appendChild(btn);
+                }
+
+                if(completed === daysCount && daysCount > 0){
+                    congratulate();
+                }
+            }
+
+            function markComplete(i, btn){
+                // guard: prevent marking a day if previous day isn't completed
+                if(state[i]) return;
+                if(i > 0 && !state[i-1]) return;
+
+                state[i] = true;
+                btn.classList.add('completed');
+                btn.disabled = true;
+                save();
+                render();
+                status.textContent = 'Saved';
+                setTimeout(()=>status.textContent = '',1200);
+            }
+
+            function reset(keepCount=true){
+            
+                state = Array.from({length: daysCount}, ()=>false);
+                if(!keepCount){
+                    daysCount = parseInt(daysInput.value,10) || 7;
+                }
+                save();
+                render();
+                status.textContent = 'Reset';
+                setTimeout(()=>status.textContent = '',1200);
+            }
+
+            function congratulate(){
+                congrats.textContent = 'Congratulations — consistency achieved! 🎉';
+                congrats.style.display = 'block';
+            }
+
+            // handle create
+            document.getElementById('settings').addEventListener('submit', (e)=>{
+                e.preventDefault();
+                const n = Math.max(1, Math.min(365, parseInt(daysInput.value,10) || 7));
+                daysCount = n;
+                state = Array.from({length: daysCount}, ()=>false);
+                save();
+                render();
+            });
+
+            resetBtn.addEventListener('click', ()=> reset(true));
+
+            // initialize from storage (or default)
+            (function init(){
+                const savedCount = localStorage.getItem(LS_KEY_COUNT);
+                if(savedCount !== null){
+                    daysCount = Math.max(1, parseInt(savedCount,10) || 7);
+                } else {
+                    daysCount = parseInt(daysInput.value,10) || 7;
+                }
+                load();
+                daysInput.value = daysCount;
+                render();
+            })();
+        })();
+    </script>
+</body>
+</html>
