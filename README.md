@@ -19,7 +19,7 @@
 ---
 # 📊 GitHub Stats:
 ![](https://github-readme-stats.vercel.app/api?username=harshstrr&theme=dark&hide_border=false&include_all_commits=false&count_private=false)<br/>
-![](https://nirzak-streak-stats.vercel.app/?user=harshstrr&theme=dark&hide_border=false)<br/>
+  <img src="https://github-readme-streak-stats.herokuapp.com?user=harshstrr&theme=midnight-purple"/><br/>
 ![](https://github-readme-stats.vercel.app/api/top-langs/?username=harshstrr&theme=dark&hide_border=false&include_all_commits=false&count_private=false&layout=compact)
 ---
 <p align="center">
